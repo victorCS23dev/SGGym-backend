@@ -7,3 +7,9 @@ class UserViewSet(viewsets.ModelViewSet):
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     permission_classes = [permissions.AllowAny]  # Allow any user to access this view
     serializer_class = UserSerializer
+
+class TrainerProfileViewSet(viewsets.ModelViewSet):
+    queryset = Trainer_profile.objects.all()
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]  # Allow any user to access this view
+    serializer_class = TrainerProfileSerializer
