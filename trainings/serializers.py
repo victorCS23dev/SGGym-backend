@@ -5,8 +5,10 @@ class TrainingTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Training_types
         fields = ['id', 'name', 'description']
+        read_only_fields = ['id']
 
 class TrainingSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Training_sessions
         fields = ['id', 'training_type', 'trainer', 'user', 'date', 'time', 'duration_minutes', 'is_active']
+        read_only_fields = ['id']

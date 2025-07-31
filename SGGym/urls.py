@@ -16,15 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
 from users.api import UserViewSet, TrainerProfileViewSet
 from trainings.api import TrainingTypeViewSet, TrainingSessionViewSet
-from rest_framework import routers
+from memberships.api import MembershipPlanViewSet, MembershipViewSet
+from classes.api import ClassTypeViewSet, GymClassViewSet, ClassMembershipAccessViewSet, ClassReservationViewSet
 
 router = routers.DefaultRouter()
 router.register('api/users', UserViewSet, 'user')
 router.register('api/trainer-profiles', TrainerProfileViewSet, 'trainer-profile')
 router.register('api/training-types', TrainingTypeViewSet, 'training-type')
 router.register('api/training-sessions', TrainingSessionViewSet, 'training-session')
+router.register('api/membership-plans', MembershipPlanViewSet, 'membership-plan')
+router.register('api/memberships', MembershipViewSet, 'membership')
+router.register('api/class-types', ClassTypeViewSet, 'class-type')
+router.register('api/gym-classes', GymClassViewSet, 'gym-class')
+router.register('api/class-membership-access', ClassMembershipAccessViewSet, 'class-membership-access')
+router.register('api/class-reservations', ClassReservationViewSet, 'class-reservation')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
