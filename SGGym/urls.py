@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from users.api import UserRegistrationView, CustomAuthToken, LogoutView, UserProfileViewSet, AdminUserManagementViewSet, TrainerProfileViewSet
+from payments.api import PaymentView
 
 router = routers.DefaultRouter()
 
@@ -16,6 +17,7 @@ urlpatterns = [
     path('api/register/', UserRegistrationView.as_view(), name='register'),
     path('api/login/', CustomAuthToken.as_view(), name='login'),
     path('api/logout/', LogoutView.as_view(), name='logout'),
+    path('api/payment/', PaymentView.as_view(), name='payment'),
     
     # Incluye las URLs generadas por el router
     path('api/', include(router.urls)),
