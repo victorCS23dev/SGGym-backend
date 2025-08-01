@@ -4,6 +4,9 @@ from rest_framework import routers
 from users.api import UserRegistrationView, CustomAuthToken, LogoutView, UserProfileViewSet, AdminUserManagementViewSet, TrainerProfileViewSet
 from payments.api import PaymentView
 from memberships.api import MembershipPlanViewSet, MembershipViewSet, AdminMembershipPlanViewSet
+from classes.api import (
+    ClassTypeViewSet, AdminClassTypeViewSet, AdminGymClassViewSet, 
+    GymClassViewSet, UserGymClassViewSet, AdminClassMembershipAccessViewSet)
 
 router = routers.DefaultRouter()
 
@@ -14,6 +17,12 @@ router.register(r'trainer-profile', TrainerProfileViewSet, basename='trainer-pro
 router.register(r'membership-plans', MembershipPlanViewSet, basename='membership-plans')
 router.register(r'admin-membership-plans', AdminMembershipPlanViewSet, basename='admin-membership-plans')
 router.register(r'membership', MembershipViewSet, basename='membership')
+router.register(r'class-types', ClassTypeViewSet, basename='class-types')
+router.register(r'admin-class-types', AdminClassTypeViewSet, basename='admin-class-types')
+router.register(r'gym-classes', GymClassViewSet, basename='gym-classes')
+router.register(r'admin-gym-classes', AdminGymClassViewSet, basename='admin-gym-classes')
+router.register(r'user-gym-classes', UserGymClassViewSet, basename='user-gym-classes')
+router.register(r'admin-class-membership-access', AdminClassMembershipAccessViewSet, basename='admin-class-membership-access')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

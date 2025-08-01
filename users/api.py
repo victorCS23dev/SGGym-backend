@@ -9,7 +9,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from django.contrib.auth import get_user_model
 
 # Importa tu modelo personalizado
-from .models import Trainer_profile
+from .models import TrainerProfile
 
 # Importa tus serializers
 from .serializers import (
@@ -75,7 +75,7 @@ class AdminUserManagementViewSet(viewsets.ModelViewSet):
 
 # ViewSet para que los trainers vean y editen su perfil de entrenador
 class TrainerProfileViewSet(viewsets.ModelViewSet):
-    queryset = Trainer_profile.objects.all()
+    queryset = TrainerProfile.objects.all()
     serializer_class = TrainerProfileSerializer
     permission_classes = [IsTrainer] # Usamos el permiso que creaste
 
@@ -88,6 +88,6 @@ class TrainerProfileViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         # Lógica para que cada entrenador vea solo su propio perfil
         if self.request.user.role == CustomUser.ROLE_TRAINER:
-            return Trainer_profile.objects.filter(user=self.request.user)
+            return TrainerProfile.objects.filter(user=self.request.user)
         # Si el usuario no es un entrenador (pero está autenticado), no verá nada
-        return Trainer_profile.objects.none()
+        return TrainerProfile.objects.none()

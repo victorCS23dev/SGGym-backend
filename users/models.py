@@ -29,7 +29,7 @@ class CustomUser(AbstractUser):
             self.is_superuser = False
         super().save(*args, **kwargs)
     
-class Trainer_profile(models.Model):
+class TrainerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     specialty = models.CharField(max_length=100, blank=True)
     bio = models.TextField(blank=True)

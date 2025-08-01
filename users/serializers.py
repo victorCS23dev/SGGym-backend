@@ -1,6 +1,6 @@
 # users/serializers.py
 from rest_framework import serializers
-from .models import CustomUser, Trainer_profile
+from .models import CustomUser, TrainerProfile
 
 # Este serializer es para la creación de usuarios (registro)
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -34,5 +34,5 @@ class TrainerProfileSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(read_only=True)
 
     class Meta:
-        model = Trainer_profile
+        model = TrainerProfile
         fields = ['id', 'user', 'specialty', 'bio']
