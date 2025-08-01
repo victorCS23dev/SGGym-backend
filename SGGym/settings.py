@@ -30,6 +30,7 @@ BASE_APPS = [
 LOCAL_APPS = [
     'users',
     'payments',
+    'memberships',
 ]
 
 THIRD_APPS = [
