@@ -39,3 +39,4 @@ class ClassMembershipAccessSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClassMembershipAccess
         fields = ['id', 'membership_plan', 'class_type']
+

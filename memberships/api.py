@@ -7,7 +7,7 @@ from django.utils import timezone
 from datetime import timedelta
 from users.permissions import IsAdmin
 from .models import MembershipPlan, Membership
-from .serializers import MembershipPlanSerializer, MembershipSerializer, MembershipPurchaseSerializer
+from .serializers import MembershipPlanSerializer, MembershipSerializer, MembershipPurchaseSerializer, AdminMembershipSerializer
 from payments.models import Payment
 from django.contrib.contenttypes.models import ContentType
 import uuid
@@ -100,3 +100,9 @@ class MembershipViewSet(viewsets.GenericViewSet):
                 return Response(response_serializer.data, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+# Vista para que un administrador gestione las membresías de los usuarios
+class AdminMembershipViewSet(viewsets.ModelViewSet):
+    queryset = Membership.objects.all()
+    serializer_class = AdminMembershipSerializer
+    permission_classes = [IsAdmin]

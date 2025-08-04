@@ -10,10 +10,18 @@ class MembershipPlanSerializer(serializers.ModelSerializer):
 class MembershipSerializer(serializers.ModelSerializer):
     plan = MembershipPlanSerializer(read_only=True)
     user = serializers.StringRelatedField()
-
     class Meta:
         model = Membership
         fields = ['id', 'user', 'plan', 'start_date', 'end_date', 'status']
+        read_only_fields = ['id', 'user', 'start_date', 'end_date', 'status']
+
+class AdminMembershipSerializer(serializers.ModelSerializer):
+    plan = MembershipPlanSerializer(read_only=True)
+    user = serializers.StringRelatedField()
+    class Meta:
+        model = Membership
+        fields = ['id', 'user', 'plan', 'start_date', 'end_date', 'status']
+        read_only_fields = ['id', 'user']
 
 class MembershipPurchaseSerializer(serializers.Serializer):
     # Serializer para la compra de un plan. Solo necesita el ID del plan.

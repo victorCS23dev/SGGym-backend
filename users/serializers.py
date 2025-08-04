@@ -26,9 +26,15 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'role', 'is_active']
-        read_only_fields = ['id', 'username', 'email']
-        
+        fields = ['id', 'username', 'email', 'role', 'is_active', 'first_name', 'last_name', 'date_joined']
+        read_only_fields = ['id', 'username', 'email', 'role', 'date_joined']
+
+class AdminUserManagementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'email', 'role', 'is_active', 'first_name', 'last_name', 'date_joined']
+        read_only_fields = ['id', 'date_joined']
+
 # Este serializer es para ver y editar el perfil de un entrenador
 class TrainerProfileSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(read_only=True)

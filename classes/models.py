@@ -11,8 +11,8 @@ class ClassType(models.Model):
         return self.name
 
 class GymClass(models.Model):
-    trainer = models.ForeignKey(TrainerProfile, on_delete=models.CASCADE)
-    class_type = models.ForeignKey(ClassType, on_delete=models.CASCADE)
+    trainer = models.ForeignKey(TrainerProfile, on_delete=models.CASCADE, related_name='gym_classes')
+    class_type = models.ForeignKey(ClassType, on_delete=models.CASCADE, related_name='gym_classes')
     date = models.DateTimeField()
     duration = models.DurationField()
     max_participants = models.PositiveIntegerField(default=20)

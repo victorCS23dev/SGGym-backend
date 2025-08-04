@@ -32,6 +32,7 @@ LOCAL_APPS = [
     'payments',
     'memberships',
     'classes',
+    'trainings',
 ]
 
 THIRD_APPS = [
