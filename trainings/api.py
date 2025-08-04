@@ -5,7 +5,8 @@ from rest_framework.decorators import action
 from django.db.models import F
 from .models import TrainingType, TrainingSession
 from .serializers import TrainingTypeSerializer, TrainingSessionSerializer, TrainingSessionCreateSerializer
-from users.permissions import IsAdmin, IsTrainer, IsMember # Asumiendo que tienes estos permisos
+from users.models import TrainerProfile
+from users.permissions import IsAdmin, IsMember # Asumiendo que tienes estos permisos
 
 # Vista para que los administradores gestionen los tipos de entrenamiento
 class AdminTrainingTypeViewSet(viewsets.ModelViewSet):
@@ -49,7 +50,7 @@ class MemberTrainingSessionViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         # Filtra las sesiones para que solo el miembro logueado pueda verlas
-        return TrainingSession.objects.filter(user=self.request.user.customuser).order_by('date')
+        return TrainingSession.objects.filter(user=self.request.user).order_by('date')
 
     @action(detail=False, methods=['post'], url_path='create-session')
     def create_session(self, request):
@@ -59,9 +60,13 @@ class MemberTrainingSessionViewSet(viewsets.ReadOnlyModelViewSet):
         training_type_id = serializer.validated_data['training_type_id']
         training_type = TrainingType.objects.get(id=training_type_id)
         
+        trainer_id = serializer.validated_data['trainer_id']
+        trainer = TrainerProfile.objects.get(id=trainer_id)
+
         # Asigna el usuario y guarda la sesión
         TrainingSession.objects.create(
-            user=request.user.customuser,
+            user=request.user,
+            trainer=trainer,
             training_type=training_type,
             date=serializer.validated_data['date'],
             duration_minutes=serializer.validated_data['duration_minutes'],

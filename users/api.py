@@ -123,7 +123,7 @@ class TrainerActivitiesViewSet(viewsets.ReadOnlyModelViewSet):
         training_session_serializer = TrainingSessionSerializer(training_session, many=True)
 
         agenda = {
-            'entrenamientos': gym_class_serializer.data,
+            'clases': gym_class_serializer.data,
             'sesiones_de_entrenamiento': training_session_serializer.data
         }
         return Response(agenda, status=200)

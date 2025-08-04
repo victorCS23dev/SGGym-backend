@@ -26,6 +26,7 @@ class TrainingSessionSerializer(serializers.ModelSerializer):
 
 class TrainingSessionCreateSerializer(serializers.ModelSerializer):
     training_type_id = serializers.IntegerField(write_only=True)
+    trainer_id = serializers.IntegerField(write_only=True)
     class Meta:
         model = TrainingSession
-        fields = ['training_type_id', 'date', 'duration_minutes', 'notes']
+        fields = ['training_type_id', 'trainer_id','date', 'duration_minutes', 'notes']
