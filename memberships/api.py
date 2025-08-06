@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.utils import timezone
 from datetime import timedelta
-from users.permissions import IsAdmin
+from users.permissions import IsAdmin, IsMember
 from .models import MembershipPlan, Membership
 from .serializers import MembershipPlanSerializer, MembershipSerializer, MembershipPurchaseSerializer, AdminMembershipSerializer
 from payments.models import Payment
@@ -27,7 +27,7 @@ class AdminMembershipPlanViewSet(viewsets.ModelViewSet):
 # Vista para que el usuario gestione su propia membresía
 class MembershipViewSet(viewsets.GenericViewSet):
     serializer_class = MembershipSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsMember]
 
     def get_queryset(self):
         # Un usuario solo puede ver su propia membresía
@@ -53,18 +53,6 @@ class MembershipViewSet(viewsets.GenericViewSet):
                 return Response({'error': 'Membership plan not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
             user = request.user
-            
-            # 1. Simulación de pago
-            content_type = ContentType.objects.get_for_model(Membership)
-            transaction_id = str(uuid.uuid4())
-            payment = Payment.objects.create(
-                user=user,
-                amount=plan.price,
-                status=Payment.STATUS_SUCCESS,
-                content_type=content_type,
-                object_id=plan.id,
-                transaction_id=transaction_id
-            )
 
             # Lógica para extender la membresía
             try:
@@ -94,6 +82,18 @@ class MembershipViewSet(viewsets.GenericViewSet):
                     start_date=new_start_date,
                     end_date=new_end_date,
                     status=Membership.STATUS_ACTIVE
+                )
+
+                # 1. Simulación de pago
+                content_type = ContentType.objects.get_for_model(Membership)
+                transaction_id = str(uuid.uuid4())
+                payment = Payment.objects.create(
+                    user=user,
+                    amount=plan.price,
+                    status=Payment.STATUS_SUCCESS,
+                    content_type=content_type,
+                    object_id=membership.id,
+                    transaction_id=transaction_id
                 )
 
                 response_serializer = MembershipSerializer(membership)

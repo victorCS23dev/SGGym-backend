@@ -2,7 +2,18 @@
 from rest_framework import serializers
 from .models import CustomUser, TrainerProfile
 
-# Este serializer es para la creación de usuarios (registro)
+class SimpleUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'first_name', 'last_name']
+
+class SimpleTrainerProfileSerializer(serializers.ModelSerializer):
+    user = SimpleUserSerializer(read_only=True)
+
+    class Meta:
+        model = TrainerProfile
+        fields = ['id', 'user', 'specialty']
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
@@ -22,7 +33,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         )
         return user
 
-# Este serializer es para ver y editar el perfil de un usuario
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
@@ -35,9 +45,8 @@ class AdminUserManagementSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'role', 'is_active', 'first_name', 'last_name', 'date_joined']
         read_only_fields = ['id', 'date_joined']
 
-# Este serializer es para ver y editar el perfil de un entrenador
 class TrainerProfileSerializer(serializers.ModelSerializer):
-    user = UserProfileSerializer(read_only=True)
+    user = SimpleUserSerializer(read_only=True)
 
     class Meta:
         model = TrainerProfile

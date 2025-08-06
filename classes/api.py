@@ -42,7 +42,7 @@ class GymClassViewSet(viewsets.ReadOnlyModelViewSet):
 class UserGymClassViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = GymClass.objects.filter(date__gte=timezone.now()).order_by('date')
     serializer_class = GymClassSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsMember]
     
     # Acción para que un usuario reserve una clase
     @action(detail=False, methods=['post'], url_path='reserve')

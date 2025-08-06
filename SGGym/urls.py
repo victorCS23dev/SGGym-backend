@@ -5,7 +5,7 @@ from users.api import (
     UserRegistrationView, CustomAuthToken, LogoutView, 
     UserProfileViewSet, AdminUserManagementViewSet, TrainerProfileViewSet, 
     TrainerProfileListView, TrainerActivitiesViewSet)
-from payments.api import PaymentView
+from payments.api import PaymentView, UserPaymentsView
 from memberships.api import (
     MembershipPlanViewSet, MembershipViewSet, AdminMembershipPlanViewSet, 
     AdminMembershipViewSet
@@ -16,7 +16,7 @@ from classes.api import (
     )
 from trainings.api import (
     AdminTrainingTypeViewSet, TrainingTypeViewSet, AdminTrainingSessionViewSet,
-    TrainingSessionViewSet, MemberTrainingSessionViewSet
+    TrainingSessionViewSet, TrainingRequestViewSet
     )
 
 router = routers.DefaultRouter()
@@ -41,7 +41,9 @@ router.register(r'admin-training-types', AdminTrainingTypeViewSet, basename='adm
 router.register(r'training-types', TrainingTypeViewSet, basename='training-types')
 router.register(r'admin-training-sessions', AdminTrainingSessionViewSet, basename='admin-training-sessions')
 router.register(r'training-sessions', TrainingSessionViewSet, basename='training-sessions')
-router.register(r'member-training-sessions', MemberTrainingSessionViewSet, basename='member-training-sessions')
+router.register(r'training-requests', TrainingRequestViewSet, basename='training-requests')
+router.register(r'payments', UserPaymentsView, basename='payments')
+router.register(r'admin-payment', PaymentView, basename='admin-payment')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -49,7 +51,6 @@ urlpatterns = [
     path('api/register/', UserRegistrationView.as_view(), name='register'),
     path('api/login/', CustomAuthToken.as_view(), name='login'),
     path('api/logout/', LogoutView.as_view(), name='logout'),
-    path('api/payment/', PaymentView.as_view(), name='payment'),
 
     # Incluye las URLs generadas por el router
     path('api/', include(router.urls)),

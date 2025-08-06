@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import TrainingType, TrainingSession
-from users.serializers import UserProfileSerializer, TrainerProfileSerializer
+from .models import TrainingType, TrainingSession, TrainingRequest
+from users.serializers import SimpleUserSerializer, SimpleTrainerProfileSerializer
 
 class TrainingTypeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,24 +9,29 @@ class TrainingTypeSerializer(serializers.ModelSerializer):
 
 class TrainingSessionSerializer(serializers.ModelSerializer):
     training_type = TrainingTypeSerializer(read_only=True)
-    user = UserProfileSerializer(read_only=True)
-    trainer = TrainerProfileSerializer(read_only=True)
-    # Campo de solo escritura para que el frontend envíe el ID
-    training_type_id = serializers.IntegerField(write_only=True)
-    trainer_id = serializers.IntegerField(write_only=True, required=False)
-    user_id = serializers.IntegerField(write_only=True, required=False)
+    user = SimpleUserSerializer(read_only=True)
+    trainer = SimpleTrainerProfileSerializer(read_only=True)
 
     class Meta:
         model = TrainingSession
         fields = [
-            'id', 'user', 'user_id', 'trainer', 'trainer_id',
-            'training_type', 'training_type_id',
+            'id', 'user', 'trainer', 'training_type', 
             'date', 'duration_minutes', 'notes'
         ]
 
-class TrainingSessionCreateSerializer(serializers.ModelSerializer):
-    training_type_id = serializers.IntegerField(write_only=True)
+# Serializer para que los miembros soliciten una sesión de entrenamiento
+class TrainingRequestSerializer(serializers.ModelSerializer):
+    member = SimpleUserSerializer(read_only=True)
     trainer_id = serializers.IntegerField(write_only=True)
+    training_type_id = serializers.IntegerField(write_only=True)
+    
+    class Meta:
+        model = TrainingRequest
+        fields = ['id', 'member', 'trainer_id', 'training_type_id', 'requested_date', 'duration_minutes', 'notes', 'status']
+        read_only_fields = ['id', 'member', 'status']
+
+# Serializer para que los entrenadores acepten una solicitud y creen la sesión
+class TrainingSessionFromRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = TrainingSession
-        fields = ['training_type_id', 'trainer_id','date', 'duration_minutes', 'notes']
+        fields = ['date', 'duration_minutes', 'notes']
